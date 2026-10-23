@@ -109,13 +109,21 @@ config :esbuild,
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "4.1.4",
+  version: "4.3.3",
+  version_check: false,
+  path: Path.expand("../assets/node_modules/.bin/tailwindcss", __DIR__),
   tunez: [
     args: ~w(
       --input=assets/css/app.css
       --output=priv/static/assets/app.css
     ),
-    cd: Path.expand("..", __DIR__)
+    cd: Path.expand("..", __DIR__),
+    env: %{
+      "NODE_PATH" => [
+        Path.expand("../deps", __DIR__),
+        Mix.Project.build_path()
+      ]
+    }
   ]
 
 # Configures Elixir's Logger
