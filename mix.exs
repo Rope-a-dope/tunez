@@ -54,7 +54,7 @@ defmodule Tunez.MixProject do
       {:phoenix_html, "~> 4.3"},
       {:phoenix_live_reload, "~> 1.6", only: :dev},
       {:phoenix_live_view, "~> 1.2"},
-      {:phoenix_live_dashboard, "~> 0.8.7"},
+      {:phoenix_live_dashboard, "~> 0.9"},
       {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.5.1", runtime: Mix.env() == :dev},
       {:heroicons,
@@ -65,16 +65,16 @@ defmodule Tunez.MixProject do
        compile: false,
        depth: 1},
       {:swoosh, "~> 1.26"},
-      {:req, "~> 0.6.2"},
+      {:req, "~> 0.7"},
       {:telemetry_metrics, "~> 1.1"},
       {:telemetry_poller, "~> 1.3"},
       {:gettext, "~> 1.0"},
       {:jason, "~> 1.4"},
-      {:dns_cluster, "~> 0.2.0"},
+      {:dns_cluster, "~> 0.3.0"},
       {:bandit, "~> 1.12"},
       {:igniter, "~> 0.8.2", only: [:dev]},
       {:lazy_html, "~> 0.1.11", only: :test},
-      {:phoenix_test, "~> 0.11.1", only: :test, runtime: false}
+      {:phoenix_test, "~> 0.13", only: :test, runtime: false}
     ]
   end
 
@@ -99,6 +99,7 @@ defmodule Tunez.MixProject do
       "assets.setup": ["esbuild.install --if-missing"],
       "assets.build": ["tailwind tunez", "esbuild tunez"],
       "assets.deploy": [
+        "compile",
         "tailwind tunez --minify",
         "esbuild tunez --minify",
         "phx.digest"
