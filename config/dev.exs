@@ -1,4 +1,5 @@
 import Config
+config :ash, policies: [show_policy_breakdowns?: true]
 
 # Configure your database
 config :tunez, Tunez.Repo,
@@ -63,7 +64,7 @@ config :tunez, TunezWeb.Endpoint,
   ]
 
 # Enable dev routes for dashboard and mailbox
-config :tunez, dev_routes: true
+config :tunez, dev_routes: true, token_signing_secret: "L3BT4FFqDNANlH5AEd7yIfcwAYpqHuQT"
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :default_formatter, format: "[$level] $message\n"
@@ -84,3 +85,6 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+config :ash_authentication, debug_authentication_failures?: true
+config :ash, :pub_sub, debug?: true

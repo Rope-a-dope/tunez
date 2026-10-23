@@ -1,8 +1,18 @@
 defmodule TunezWeb.NotificationsLive do
   use TunezWeb, :live_view
 
+  require Logger
+
+  on_mount {TunezWeb.LiveUserAuth, :current_user}
+
   def mount(_params, _session, socket) do
-    notifications = []
+    notifications = Tunez.Accounts.notifications_for_user!(actor: socket.assigns.current_user)
+
+    if connected?(socket) do
+      "notifications:#{socket.assigns.current_user.id}"
+      |> TunezWeb.Endpoint.subscribe()
+    end
+
     {:ok, assign(socket, notifications: notifications)}
   end
 
@@ -16,8 +26,7 @@ defmodule TunezWeb.NotificationsLive do
       >
         <.icon name="hero-bell-alert" class="w-8 h-8 bg-gray-400" />
         <span :if={@notifications != []} class="absolute flex h-3 w-3 top-0 right-0 mt-1 mr-1.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error-600 opacity-75">
-          </span>
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error-600 opacity-75"></span>
           <span class="relative inline-flex rounded-full h-3 w-3 bg-error-600"></span>
         </span>
       </div>
@@ -56,7 +65,25 @@ defmodule TunezWeb.NotificationsLive do
     """
   end
 
-  def handle_event("dismiss-notification", %{"id" => _id}, socket) do
-    {:noreply, socket}
+  def handle_event("dismiss-notification", %{"id" => id}, socket) do
+    case Enum.find(socket.assigns.notifications, &(&1.id == id)) do
+      nil ->
+        {:noreply, socket}
+
+      notification ->
+        case Tunez.Accounts.dismiss_notification(notification, actor: socket.assigns.current_user) do
+          :ok ->
+            {:noreply, socket}
+
+          {:error, error} ->
+            Logger.info("Could not dismiss notification '#{id}': #{inspect(error)}")
+            {:noreply, put_flash(socket, :error, "Could not dismiss notification")}
+        end
+    end
+  end
+
+  def handle_info(%{topic: "notifications:" <> _}, socket) do
+    notifications = Tunez.Accounts.notifications_for_user!(actor: socket.assigns.current_user)
+    {:noreply, assign(socket, notifications: notifications)}
   end
 end
