@@ -29,7 +29,8 @@ defmodule Tunez.Repo.Migrations.AddAlbumTracks do
             type: :uuid,
             prefix: "public",
             on_delete: :delete_all
-          ), null: false
+          ),
+          null: false
     end
 
     create index(:tracks, [:album_id])

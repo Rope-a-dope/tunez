@@ -22,7 +22,8 @@ defmodule Tunez.Repo.Migrations.CreateNotifications do
             type: :uuid,
             prefix: "public",
             on_delete: :delete_all
-          ), null: false
+          ),
+          null: false
 
       add :album_id,
           references(:albums,
@@ -31,7 +32,8 @@ defmodule Tunez.Repo.Migrations.CreateNotifications do
             type: :uuid,
             prefix: "public",
             on_delete: :delete_all
-          ), null: false
+          ),
+          null: false
     end
 
     create index(:notifications, [:user_id])
