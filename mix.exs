@@ -50,7 +50,7 @@ defmodule Tunez.MixProject do
       {:phoenix, "~> 1.8"},
       {:phoenix_ecto, "~> 4.7"},
       {:ecto_sql, "~> 3.14"},
-      {:postgrex, "~> 0.22.2"},
+      {:postgrex, "~> 0.23"},
       {:phoenix_html, "~> 4.3"},
       {:phoenix_live_reload, "~> 1.6", only: :dev},
       {:phoenix_live_view, "~> 1.2"},

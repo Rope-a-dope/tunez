@@ -110,9 +110,9 @@ config :esbuild,
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "4.3.3",
+  version: "4.3.5",
   version_check: false,
-  path: Path.expand("../assets/node_modules/.bin/tailwindcss", __DIR__),
+  path: System.find_executable("tailwindcss"),
   tunez: [
     args: ~w(
       --input=assets/css/app.css
